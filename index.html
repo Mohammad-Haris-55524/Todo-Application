@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./assests/productivity.png" type="image/icon type">
+    <title>Todo Application</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    </head>
+  <body>
+    <!----------------------------------------------------- HEADER CONTAINER NAVIGATION BAR ----------------------------------------------->
+<main>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top bg-dark border-bottom border-body" data-bs-theme="dark">
+    <div class="container-fluid d-flex justify-content-between">
+          <a class="navbar-brand" href="#">Todo Application</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <button class="btn btn-light btn-sm " id="getCanvas" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40" height="30" viewBox="0 0 50 50">
+          <path d="M 5 8 A 2.0002 2.0002 0 1 0 5 12 L 45 12 A 2.0002 2.0002 0 1 0 45 8 L 5 8 z M 5 23 A 2.0002 2.0002 0 1 0 5 27 L 45 27 A 2.0002 2.0002 0 1 0 45 23 L 5 23 z M 5 38 A 2.0002 2.0002 0 1 0 5 42 L 45 42 A 2.0002 2.0002 0 1 0 45 38 L 5 38 z"></path>
+          </svg></button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+            <!-- Delete only selected Todos -->
+            <button type="button" class="btn btn-danger btn-lg-sm  me-3" id="button-state" onclick="deleteSelectedTodos(this)" >Delete Selected Todos</button>
+            <!-- Todos counter -->
+            <!-- <button type="button" id = "todo-counter" class="btn btn-success me-3 btn-sm">Todo Count: 0</button> -->
+            <button type="button" id = "todo-counter" class="btn btn-info me-3 btn-lg-sm">Todo Count: 0</button>
+            <!-- Delete all todos -->
+            <button type="button" class="btn btn-danger me-3 btn-lg-sm" id="btn-value" onclick="deleteAllTodos()">Delete All Todo <i class="fa-sharp fa-solid fa-trash"></i></button>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success me-3 btn-md-sm" onclick="showModal(true)">Add TODO</button>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" onkeyup="searchTodoItems(event)" id="search-todo" type="search" placeholder="Search" aria-label="Search">
+              <!-- <button class="btn btn-outline-success" onclick="searchTodoItems(event)">Search</button> -->
+            </form>
+          </ul>
+          </div>
+    </div>
+  </nav>
+
+<!--------------------------------------------------- Mobile responsive navigation bar-------------------------------------------------------->
+<!-- <button class="btn btn-primary"  id="getCanvas" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">dasd</button> -->
+
+<div class="offcanvas offcanvas-xxl offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Mobile responsive</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form role="search">
+      <input class="form-control me-2" onkeyup="searchTodoItems(event)" id="search-todo-mobile-responsive" type="search" placeholder="Search Todos" aria-label="Search">
+      <!-- <button class="btn btn-outline-success" onclick="searchTodoItems(event)">Search</button> -->
+    </form>
+    <div class="d-grid gap-2 col-10 mt-4 mx-auto">
+      <!-- Button trigger modal + Add todo -->
+      <button type="button" class="btn btn-success me-3 btn-md-sm" onclick="showModal(true)">Add TODO</button>
+      <!-- Delete all todos -->
+      <button type="button" class="btn btn-danger me-3 btn-lg-sm" id="btn-value-mobile-responsive" onclick="deleteAllTodos()">Delete All Todo <i class="fa-sharp fa-solid fa-trash"></i></button>
+         <!-- Delete only selected Todos -->
+         <button type="button" class="btn btn-danger btn-lg-sm  me-3" id="button-state-mobile-responsive" onclick="deleteSelectedTodos(this)" >Delete Selected Todos</button>
+        </div>
+        <div class="d-grid gap-2 col-11 mx-auto">
+         <!-- Todos counter -->
+         <button style="margin-top: 0.5rem;" type="button" id = "todo-counter-for-mobile-responsive" class="btn btn-info me-3 btn-lg-sm ">Todos Count: 0</button>
+        </div>
+  </div>
+</div>
+  <!------------------------------------------------------------ BODY CONTAINER ----------------------------------------------------------->
+<div class="container">
+      <div style= "margin-top: 4rem;" class="d-flex justify-content-between align-items-center custom-class-options">
+        <div class="heading" class=" col-4 col-sm-12 col-md-12 col-lg-6 col-xl-7 ">
+        <h1>My todo Application</h1>
+      </div>
+      <div class="d-flex gap-3 col-xs-1 ">
+        <div>
+        <select style="width: fit-content;"  class="form-select border border-primary" aria-label="Default select example" onchange="sortTodos(this)">
+          <option selected>Created At</option>
+          <option value="1">Sort(A-Z)</option>
+          <option value="2">Sort(Z-A)</option>
+        </select>
+      </div>
+      <div>
+        <select style="width: fit-content;" id="option-selection" class="form-select border border-primary col-xs-2 col" aria-label="Default select example" onchange="selectTodoStatus(this)">
+          <option selected>Select todo Status (Done/undone)</option>
+          <option value="1">All</option>
+          <option value="2">Done</option>
+          <option value="3">Undone</option>
+        </select>
+      </div>
+      </div>
+      </div>
+        <div id="todo-list-container">
+          <ul class="list">
+          </ul>
+    </div>
+    <!-- TOAST -->
+    <!-- <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3 top-0 end-0 text-success" >
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Confirmation Message</strong>
+      <small>Few seconds ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Todo Added Successfully
+    </div>
+  </div>
+</div>
+    
+    <!-- MODEL -->
+  <div class="modal fade" id="add-todo-modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Todo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+           <!-- MODEL BODY  -->
+           <!-- APPROACH: #01 By using <form> tag with the combination of onsubmit and buttons are placed inside the form tag to get the date
+            of form whenever we will click on save change button-->
+            <!-- Here we are using form built in validation -->
+        <!-- <div class="modal-body">
+            <form onsubmit="todoDetail(event)"> 
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Enter your title" required>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="7" placeholder="Enter your description"></textarea>
+              </div> -->
+<!-- Here i am adding modal-footer-custom(custom class) taky model-fotter(generic/orignal class) my jo bhe changing karo ga woh changing 
+overwrite to ho jayen gi lekin orignal class ki copy bna kar hongi iss sy faida yah hoga ky jab my kahen or my orignal/generic class
+(modal-footer) use karo ga usy affect nahe hoga. Jo bhe changes ayen gi or generic class ki copy bana kar custom class my ayen gy trha sy ham 
+orignal class ki copy bana kar changes kar skty han ky hamara kaam bhe hogy or bootstrap ki generic class par koi affect bhe na ay.
+ -->
+            <!-- <div class="modal-footer modal-footer-custom px-0 pb-0"> 
+                <button type="button" class="btn btn-danger me-3" data-bs-dismiss="modal">Close</button>
+                <button  class="btn btn-primary" >Save changes</button>
+            </div>
+            </form>
+        </div> -->
+
+
+    <!-- APPROACH: #02: Without using form tag. Here we are simply getting the data by using onclick function on the trigger of the button
+    and then accessing the values of input fields by using id -->
+    <!-- Here, we will create our own validation by using JAVASCRIPT by using onclick() because requied validation only works in <form> tag-->
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter your title">
+                  </div>
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="Enter your description"></textarea>
+                  </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addTodo(true)" id="replaceModalAddTodoButtonTitle">Add Todo</button>
+            </div>
+            <!-- APPROACH: #03:Button ko id day kar addeventlistner laga kar bhe values get kar skty han input fields ki -->
+            <!-- <div class="modal-footer">
+                <button type="button" id="addTodo" class="btn btn-primary" >Save changes</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<div class="container fixed-bottom">
+  <footer class="d-flex flex-wrap justify-content-center align-items-center py-xs py-sm-1 py-3 my-sm-1 my-4 border-top border-2 opacity-95 ">
+    <p class="col-md-4 mb-0 text-muted">© 2024 MyApplication, Mohammad-Haris</p>
+    <ul class="nav col-md-4 justify-content-end custom-class-footer">
+      <li class="nav-item"><a href="https://www.facebook.com/haris.dx.14" target="_blank" class="nav-link px-2 text-muted"><i class="fa-brands fa-facebook fa-md" style="color: #2c86ca;"></i></a></li>
+      <li class="nav-item"><a href="https://www.linkedin.com/in/muhammad-haris-aries/" target="_blank" class="nav-link px-2 text-muted"><i class="fa-brands fa-linkedin fa-md" style="color: #0f0e0e;"></i></a></li>
+      <li class="nav-item"><a href="https://github.com/Mohammad-Haris-55524" target="_blank" class="nav-link px-2 text-muted"><i class="fa-brands fa-github fa-md" style="color:black"></i></a></li>
+      <li class="nav-item"><a href="mailto:mohammadharis10678@gmail.com"  target="_blank" class="nav-link px-2 text-muted"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="23" viewBox="0 0 48 58">
+        <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"></path><path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"></path><polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"></polygon><path fill="#c62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301,8.228,8,7.298,8h0C4.924,8,3,9.924,3,12.298z"></path><path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301,39.772,8,40.702,8h0 C43.076,8,45,9.924,45,12.298z"></path>
+        </svg></a></li>
+      <li class="nav-item"><a href="https://wa.me/+923322435117?text=Hello,%20I%20am%20visiting%20your%20website%20and%20would%20like%20to%20get%20in%20touch." target="_blank" class="nav-link px-2 text-muted"><i class="fa-brands fa-whatsapp fa-md" style="color: #18b833;"></i></a></li>
+    </ul>
+  </footer>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/f1f4436fd5.js"></script>
+    <script src="./code.js"></script>
+  </body>
+</html>
